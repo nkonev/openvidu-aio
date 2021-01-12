@@ -1,0 +1,8 @@
+!.gitignore
+.project
+.idea
+*.iml
+vendor
+.vendor-new
+target
+build
