@@ -10,8 +10,6 @@ RUN apt-get update && apt-get install --no-install-recommends --yes gnupg && \
 RUN apt-get update && apt-get install --no-install-recommends --yes kurento-media-server
 # https://github.com/Kurento/kurento-docker/tree/master/kurento-media-server
 COPY ./entrypoint_kms.sh /entrypoint_kms.sh
-COPY ./getmyip.sh /getmyip.sh
-RUN chmod +x /getmyip.sh
 
 # Install other dependencies
 RUN apt-get install -y redis openjdk-11-jre coturn curl wget dnsutils supervisor
@@ -20,8 +18,9 @@ RUN rm -rf /var/lib/apt/lists/*
 # Install Openvidu
 # https://github.com/OpenVidu/openvidu/tree/master/openvidu-server/docker/openvidu-server
 RUN mkdir -p /opt/openvidu && cd /opt/openvidu && wget https://github.com/OpenVidu/openvidu/releases/download/v${OPENVIDU_VERSION}/openvidu-server-${OPENVIDU_VERSION}.jar && mv openvidu-server-${OPENVIDU_VERSION}.jar openvidu-server.jar && echo ${OPENVIDU_VERSION} > VERSION
-COPY ./discover_my_public_ip.sh /usr/local/bin
 COPY ./entrypoint_openvidu.sh /entrypoint_openvidu.sh
+
+COPY ./discover_my_public_ip.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/discover_my_public_ip.sh
 
 COPY ./entrypoint_redis.sh /entrypoint_redis.sh

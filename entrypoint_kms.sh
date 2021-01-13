@@ -59,7 +59,7 @@ fi
 # WebRtcEndpoint settings
 if [[ -n "${KMS_EXTERNAL_IPV4:-}" ]]; then
     if [[ "$KMS_EXTERNAL_IPV4" == "auto" ]]; then
-        if IP="$(/getmyip.sh --ipv4)"; then
+        if IP="$(/usr/local/bin/discover_my_public_ip.sh --ipv4)"; then
             set_parameter "$WEBRTC_FILE" "externalIPv4" "$IP"
         fi
     else
@@ -68,7 +68,7 @@ if [[ -n "${KMS_EXTERNAL_IPV4:-}" ]]; then
 fi
 if [[ -n "${KMS_EXTERNAL_IPV6:-}" ]]; then
     if [[ "$KMS_EXTERNAL_IPV6" == "auto" ]]; then
-        if IP="$(/getmyip.sh --ipv6)"; then
+        if IP="$(/usr/local/bin/discover_my_public_ip.sh --ipv6)"; then
             set_parameter "$WEBRTC_FILE" "externalIPv6" "$IP"
         fi
     else
