@@ -41,8 +41,8 @@ if [[ ! -z "${TURN_PUBLIC_IP}" ]]; then
     echo "external-ip=${TURN_PUBLIC_IP}" >> /etc/turnserver.conf
 fi
 
-if [[ ! -z "${REDIS_IP}" ]] && [[ ! -z "${DB_NAME}" ]] && [[ ! -z "${DB_PASSWORD}" ]]; then
-    echo "redis-userdb=\"ip=${REDIS_IP} dbname=${DB_NAME} password=${DB_PASSWORD} connect_timeout=30\"" >> /etc/turnserver.conf
+if [[ ! -z "${REDIS_IP}" ]] && [[ ! -z "${REDIS_DB_NAME}" ]] && [[ ! -z "${REDIS_PASSWORD}" ]]; then
+    echo "redis-userdb=\"ip=${REDIS_IP} dbname=${REDIS_DB_NAME} password=${REDIS_PASSWORD} connect_timeout=30\"" >> /etc/turnserver.conf
 fi
 
 if [[ ! -z "${TURN_USERNAME_PASSWORD}" ]]; then

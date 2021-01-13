@@ -1,10 +1,10 @@
 #!/bin/sh
 
-if [ -f /proc/net/if_inet6 ]; then
-  [ -z "${REDIS_BINDING}" ] && REDIS_BINDING="127.0.0.1 ::1"
-else
+#if [ -f /proc/net/if_inet6 ]; then
+#  [ -z "${REDIS_BINDING}" ] && REDIS_BINDING="127.0.0.1 ::1"
+#else
   [ -z "${REDIS_BINDING}" ] && REDIS_BINDING="127.0.0.1"
-fi
+#fi
 
 printf "\n"
 printf "\n  ======================================="
