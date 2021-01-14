@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install --no-install-recommends --yes kurento-medi
 COPY ./entrypoint_kms.sh /entrypoint_kms.sh
 
 # Install other dependencies
-RUN apt-get install -y redis openjdk-11-jre coturn curl wget dnsutils supervisor
+RUN apt-get install --no-install-recommends -y redis openjdk-11-jre coturn curl wget dnsutils supervisor
 RUN rm -rf /var/lib/apt/lists/*
 
 # Install Openvidu
