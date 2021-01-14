@@ -4,6 +4,21 @@
 DEBUG=${DEBUG:-false}
 [ "$DEBUG" == "true" ] && set -x
 
+# Public coturn ip - setting default
+[[ -z "${TURN_PUBLIC_IP}" ]] && export TURN_PUBLIC_IP=auto-ipv4
+
+# Public coturn port - setting default
+[[ -z "${TURN_LISTEN_PORT}" ]] && export TURN_LISTEN_PORT=3478
+
+# Internal redis ip - setting default
+[[ -z "${COTURN_COTURN_REDIS_IP}" ]] && export COTURN_COTURN_REDIS_IP=127.0.0.1
+
+# redis db - setting default
+[[ -z "${COTURN_REDIS_DBNAME}" ]] && export COTURN_REDIS_DBNAME=0
+
+# redis password - setting default
+[[ -z "${COTURN_REDIS_PASSWORD}" ]] && export COTURN_REDIS_PASSWORD=turn
+
 #Check parameters
 [[ "${TURN_PUBLIC_IP}" == "auto-ipv4" ]] && export TURN_PUBLIC_IP=$(/usr/local/bin/discover_my_public_ip.sh)
 [[ "${TURN_PUBLIC_IP}" == "auto-ipv6" ]] && export TURN_PUBLIC_IP=$(/usr/local/bin/discover_my_public_ip.sh --ipv6)
@@ -41,8 +56,8 @@ if [[ ! -z "${TURN_PUBLIC_IP}" ]]; then
     echo "external-ip=${TURN_PUBLIC_IP}" >> /etc/turnserver.conf
 fi
 
-if [[ ! -z "${REDIS_IP}" ]] && [[ ! -z "${REDIS_DB_NAME}" ]] && [[ ! -z "${REDIS_PASSWORD}" ]]; then
-    echo "redis-userdb=\"ip=${REDIS_IP} dbname=${REDIS_DB_NAME} password=${REDIS_PASSWORD} connect_timeout=30\"" >> /etc/turnserver.conf
+if [[ ! -z "${COTURN_COTURN_REDIS_IP}" ]] && [[ ! -z "${COTURN_REDIS_DBNAME}" ]] && [[ ! -z "${COTURN_REDIS_PASSWORD}" ]]; then
+    echo "redis-userdb=\"ip=${COTURN_COTURN_REDIS_IP} dbname=${COTURN_REDIS_DBNAME} password=${COTURN_REDIS_PASSWORD} connect_timeout=30\"" >> /etc/turnserver.conf
 fi
 
 if [[ ! -z "${TURN_USERNAME_PASSWORD}" ]]; then
