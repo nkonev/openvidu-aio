@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #if [ -f /proc/net/if_inet6 ]; then
 #  [ -z "${REDIS_BINDING}" ] && REDIS_BINDING="127.0.0.1 ::1"
