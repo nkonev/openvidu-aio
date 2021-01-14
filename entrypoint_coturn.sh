@@ -57,7 +57,7 @@ if [[ ! -z "${TURN_PUBLIC_IP}" ]]; then
 fi
 
 if [[ ! -z "${COTURN_COTURN_REDIS_IP}" ]] && [[ ! -z "${COTURN_REDIS_DBNAME}" ]] && [[ ! -z "${COTURN_REDIS_PASSWORD}" ]]; then
-    echo "redis-userdb=\"ip=${COTURN_COTURN_REDIS_IP} dbname=${COTURN_REDIS_DBNAME} password=${COTURN_REDIS_PASSWORD} connect_timeout=30\"" >> /etc/turnserver.conf
+    echo "redis-userdb=\"host=localhost dbname=${COTURN_REDIS_DBNAME} password=${COTURN_REDIS_PASSWORD} connect_timeout=30\"" >> /etc/turnserver.conf
 fi
 
 if [[ ! -z "${TURN_USERNAME_PASSWORD}" ]]; then
