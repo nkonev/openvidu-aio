@@ -52,8 +52,11 @@ realm=openvidu
 verbose
 EOF
 
-if [[ ! -z "${TURN_PUBLIC_IP}" ]]; then
+if [[ ! -z "${TURN_PUBLIC_IP}" && -z "${TURN_BEHIND_NAT}" ]]; then
     echo "external-ip=${TURN_PUBLIC_IP}" >> /etc/turnserver.conf
+elif [[ ! -z "${TURN_PUBLIC_IP}" && ! -z "${TURN_BEHIND_NAT}" ]]; then
+    TURN_INTERNAL_IP=$(hostname -i)
+    echo "external-ip=${TURN_PUBLIC_IP}/${TURN_INTERNAL_IP}" >> /etc/turnserver.conf
 fi
 
 if [[ ! -z "${COTURN_COTURN_REDIS_IP}" ]] && [[ ! -z "${COTURN_REDIS_DBNAME}" ]] && [[ ! -z "${COTURN_REDIS_PASSWORD}" ]]; then
