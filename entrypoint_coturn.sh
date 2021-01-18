@@ -1,8 +1,15 @@
 #!/bin/bash
 
+# check hostname utility
+which hostname
+if [[ "$?" != 0 ]]; then
+  echo hostname is not installed
+  exit 1
+fi
+
 # Set debug mode
-DEBUG=${DEBUG:-false}
-[ "$DEBUG" == "true" ] && set -x
+COTURN_BASH_DEBUG=${COTURN_BASH_DEBUG:-false}
+[ "COTURN_BASH_DEBUG" == "true" ] && set -x
 
 # Public coturn ip - setting default
 [[ -z "${TURN_PUBLIC_IP}" ]] && export TURN_PUBLIC_IP=auto-ipv4
@@ -11,7 +18,7 @@ DEBUG=${DEBUG:-false}
 [[ -z "${TURN_LISTEN_PORT}" ]] && export TURN_LISTEN_PORT=3478
 
 # Internal redis ip - setting default
-[[ -z "${COTURN_COTURN_REDIS_IP}" ]] && export COTURN_COTURN_REDIS_IP=127.0.0.1
+[[ -z "${COTURN_REDIS_IP}" ]] && export COTURN_REDIS_IP=127.0.0.1
 
 # redis db - setting default
 [[ -z "${COTURN_REDIS_DBNAME}" ]] && export COTURN_REDIS_DBNAME=0
@@ -29,9 +36,9 @@ echo "TURN public IP: ${TURN_PUBLIC_IP:-"empty"}"
 [[ ! -z "${TURN_LISTEN_PORT}" ]] && echo "TURN listening port: ${TURN_LISTEN_PORT}" ||
     { echo "TURN_LISTEN_PORT environment variable is not defined"; exit 1; }
 
-[[ ! -z "${MIN_PORT}" ]] && echo "Defined min port coturn: ${MIN_PORT}" || echo "Min port coturn: 40000"
+[[ ! -z "${COTURN_MIN_PORT}" ]] && echo "Defined min port coturn: ${COTURN_MIN_PORT}" || echo "Min port coturn: 40000"
 
-[[ ! -z "${MAX_PORT}" ]] && echo "Defined max port coturn: ${MAX_PORT}" || echo "Max port coturn: 65535"
+[[ ! -z "${COTURN_MAX_PORT}" ]] && echo "Defined max port coturn: ${COTURN_MAX_PORT}" || echo "Max port coturn: 65535"
 
 # Load configuration files of coturn
 # Enable turn
@@ -44,8 +51,8 @@ cat>/etc/turnserver.conf<<EOF
 listening-port=${TURN_LISTEN_PORT}
 fingerprint
 lt-cred-mech
-max-port=${MAX_PORT:-65535}
-min-port=${MIN_PORT:-40000}
+max-port=${COTURN_MAX_PORT:-65535}
+min-port=${COTURN_MIN_PORT:-40000}
 simple-log
 pidfile="/var/run/turnserver.pid"
 realm=openvidu
@@ -59,8 +66,8 @@ elif [[ ! -z "${TURN_PUBLIC_IP}" && ! -z "${TURN_BEHIND_NAT}" ]]; then
     echo "external-ip=${TURN_PUBLIC_IP}/${TURN_INTERNAL_IP}" >> /etc/turnserver.conf
 fi
 
-if [[ ! -z "${COTURN_COTURN_REDIS_IP}" ]] && [[ ! -z "${COTURN_REDIS_DBNAME}" ]] && [[ ! -z "${COTURN_REDIS_PASSWORD}" ]]; then
-    echo "redis-userdb=\"ip=${COTURN_COTURN_REDIS_IP} dbname=${COTURN_REDIS_DBNAME} password=${COTURN_REDIS_PASSWORD} connect_timeout=30\"" >> /etc/turnserver.conf
+if [[ ! -z "${COTURN_REDIS_IP}" ]] && [[ ! -z "${COTURN_REDIS_DBNAME}" ]] && [[ ! -z "${COTURN_REDIS_PASSWORD}" ]]; then
+    echo "redis-userdb=\"ip=${COTURN_REDIS_IP} dbname=${COTURN_REDIS_DBNAME} password=${COTURN_REDIS_PASSWORD} connect_timeout=30\"" >> /etc/turnserver.conf
 fi
 
 if [[ ! -z "${TURN_USERNAME_PASSWORD}" ]]; then
