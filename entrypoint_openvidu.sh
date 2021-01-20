@@ -8,6 +8,9 @@ printf "\n"
 
 [[ -z "${SUPPORT_DEPRECATED_API}" ]] && export SUPPORT_DEPRECATED_API=false
 
+[[ -z "${DOMAIN_OR_PUBLIC_IP}" ]] && export DOMAIN_OR_PUBLIC_IP=auto-ipv4
+[[ "${DOMAIN_OR_PUBLIC_IP}" == "auto-ipv4" ]] && export DOMAIN_OR_PUBLIC_IP=$(/usr/local/bin/discover_my_public_ip.sh)
+
 # Get coturn public ip
 [[ -z "${TURN_PUBLIC_IP}" ]] && export TURN_PUBLIC_IP=auto-ipv4
 if [[ "${TURN_PUBLIC_IP}" == "auto-ipv4" ]]; then

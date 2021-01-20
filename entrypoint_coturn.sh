@@ -59,9 +59,9 @@ realm=openvidu
 verbose
 EOF
 
-if [[ ! -z "${TURN_PUBLIC_IP}" && -z "${TURN_BEHIND_NAT}" ]]; then
+if [[ ! -z "${TURN_PUBLIC_IP}" && "${TURN_BEHIND_NAT}" != "true" ]]; then
     echo "external-ip=${TURN_PUBLIC_IP}" >> /etc/turnserver.conf
-elif [[ ! -z "${TURN_PUBLIC_IP}" && ! -z "${TURN_BEHIND_NAT}" ]]; then
+elif [[ ! -z "${TURN_PUBLIC_IP}" && "${TURN_BEHIND_NAT}" == "true" ]]; then
     TURN_INTERNAL_IP=$(hostname -i)
     echo "external-ip=${TURN_PUBLIC_IP}/${TURN_INTERNAL_IP}" >> /etc/turnserver.conf
 fi
